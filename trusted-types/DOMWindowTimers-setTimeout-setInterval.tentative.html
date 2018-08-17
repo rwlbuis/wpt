@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<script src="support/helper.sub.js"></script>
+<body>
+<script>
+  //helper functions for the tests
+  function fun() {
+    result = "Pass";
+    //assert_equals(1, 2);
+    assert_equals(result, "Pass");
+    t.done();
+  }
+
+  async_test(t => {
+    var result = "Fail";
+    t.step_func(() => {
+    });
+  }, "window.setTimeout: TrustedScript.escape()");
+
+/*
+  async_test(t => {
+    testWindowSetTimeout(t, TrustedScript.unsafelyCreate('fun'));
+  }, "window.setTimeout: TrustedScript.unsafelyCreate");
+
+  async_test(t => {
+    testWindowSetInterval(t, TrustedHTML.escape(STRINGS.unescapedHTML));
+  }, "window.setInterval: TrustedHTML.escape()");
+
+  async_test(t => {
+    testWindowSetInterval(t, TrustedHTML.unsafelyCreate(STRINGS.unescapedHTML));
+  }, "window.setInterval: TrustedHTML.unsafelyCreate");*/
+</script>
