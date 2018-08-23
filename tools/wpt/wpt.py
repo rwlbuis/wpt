@@ -133,11 +133,7 @@ def main(prog=None, argv=None):
             if rv is not None:
                 sys.exit(int(rv))
         except Exception:
-            if main_args.debug:
-                import pdb
-                pdb.post_mortem()
-            else:
-                raise
+            raise
     sys.exit(0)
 
 

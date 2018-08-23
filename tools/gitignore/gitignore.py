@@ -243,3 +243,7 @@ class PathFilter(object):
             return iterator
 
         return self.filter(iterator)
+
+
+def has_ignore(dirpath):
+    return os.path.exists(os.path.join(dirpath, ".gitignore"))
