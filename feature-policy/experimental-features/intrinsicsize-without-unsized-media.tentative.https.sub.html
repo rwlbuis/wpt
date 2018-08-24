@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<body>
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<iframe></iframe>
+<script>
+'use strict';
+
+const srcs = [
+  "/feature-policy/experimental-features/resources/image.svg",
+  "/feature-policy/experimental-features/resources/image.jpg",
+  "/feature-policy/experimental-features/resources/image.png",
+  "/feature-policy/experimental-features/resources/image.bmp"
+];
+
+// Wait for a sec for image to repaint before comparing the values.
+function updateAttribute(test, img, attribute, value) {
+  return new Promise(resolve => {
+    img.setAttribute(attribute, value);
+    test.step_timeout(resolve(), 1);
+  });
+}
+
+for (var src of srcs) {
+  promise_test(async(test) => {
+    var img = document.createElement('IMG');
+    document.body.appendChild(img);
+    await updateAttribute(test, img, 'src', src);
+    await updateAttribute(test, img, 'intrinsicsize', '400 x 500');
+    assert_equals(img.width, 400, 'width');
+    assert_equals(img.height, 500, 'height');
+    assert_equals(img.naturalWidth, 400, 'naturalWidth');
+    assert_equals(img.naturalHeight, 500, 'naturalHeight');
+
+    await updateAttribute(test, img, 'width', '800');
+    assert_equals(img.width, 800, 'width');
+    assert_equals(img.height, 1000, 'height');
+    assert_equals(img.naturalWidth, 400, 'naturalWidth');
+    assert_equals(img.naturalHeight, 500, 'naturalHeight');
+
+    await updateAttribute(test, img, 'style', 'height:800px;');
+    assert_equals(img.width, 800, 'width');
+    assert_equals(img.height, 800, 'height');
+    assert_equals(img.naturalWidth, 400, 'naturalWidth');
+    assert_equals(img.naturalHeight, 500, 'naturalHeight');
+
+    await updateAttribute(test, img, 'width', '');
+    assert_equals(img.width, 640, 'width');
+    assert_equals(img.height, 800, 'height');
+    assert_equals(img.naturalWidth, 400, 'naturalWidth');
+    assert_equals(img.naturalHeight, 500, 'naturalHeight');
+  }, 'Test image with src=' + src);
+}
+
+</script>
+</body>
